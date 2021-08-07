@@ -17,14 +17,14 @@ Or we can mark the class with one of the annotations from the org.springframewor
 
 @ComponentScan configures which packages to scan for classes with annotation configuration. We can specify the base package names directly with one of the basePackages or value arguments (value is an alias for basePackages):
 
-```javascript
+```java
 @Configuration
 @ComponentScan(basePackages = "com.baeldung.annotations")
 class VehicleFactoryConfig {}
 ```
 Also, we can point to classes in the base packages with the basePackageClasses argument:
 
-```javascript
+```java
 @Configuration
 @ComponentScan(basePackageClasses = VehicleFactoryConfig.class)
 class VehicleFactoryConfig {}
@@ -34,14 +34,14 @@ Both arguments are arrays so that we can provide multiple packages for each.
 If no argument is specified, the scanning happens from the same package where the @ComponentScan annotated class is present.
 
 @ComponentScan leverages the Java 8 repeating annotations feature, which means we can mark a class with it multiple times:
-```javascript
+```java
 @Configuration
 @ComponentScan(basePackages = "com.baeldung.annotations")
 @ComponentScan(basePackageClasses = VehicleFactoryConfig.class)
 class VehicleFactoryConfig {}
 ```
 Alternatively, we can use @ComponentScans to specify multiple @ComponentScan configurations:
-```javascript
+```java
 @Configuration
 @ComponentScans({ 
   @ComponentScan(basePackages = "com.baeldung.annotations")
@@ -50,14 +50,14 @@ Alternatively, we can use @ComponentScans to specify multiple @ComponentScan con
 class VehicleFactoryConfig {}
 ```
 When using XML configuration, the configuring component scanning is just as easy:
-```javascript
+```java
 <context:component-scan base-package="com.baeldung" />
 ```
 ##3. @Component
    @Component is a class level annotation. During the component scan, Spring Framework automatically detects classes annotated with @Component.
 
 For example:
-```javascript
+```java
 @Component
 class CarUtility {
     // ...
@@ -69,7 +69,7 @@ Since @Repository, @Service, @Configuration, and @Controller are all meta-annota
 
 ##4. @Repository
    DAO or Repository classes usually represent the database access layer in an application, and should be annotated with @Repository:
-```javascript
+```java
 @Repository
 class VehicleRepository {
     // ...
@@ -78,7 +78,7 @@ class VehicleRepository {
 One advantage of using this annotation is that it has automatic persistence exception translation enabled. When using a persistence framework such as Hibernate, native exceptions thrown within classes annotated with @Repository will be automatically translated into subclasses of Spring's DataAccessExeption.
 
 To enable exception translation, we need to declare our own PersistenceExceptionTranslationPostProcessor bean:
-```javascript
+```java
 @Bean
 public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
     return new PersistenceExceptionTranslationPostProcessor();
@@ -87,13 +87,13 @@ public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 Note, that in most cases, Spring does the step above automatically.
 
 Or, via XML configuration:
-```javascript
+```java
 <bean class=
   "org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 ```
 ##5. @Service
    The business logic of an application usually resides within the service layer – so we'll use the @Service annotation to indicate that a class belongs to that layer:
-```javascript
+```java
 @Service
 public class VehicleService {
     // ...    
@@ -101,7 +101,7 @@ public class VehicleService {
 ```
 ##6. @Controller
    @Controller is a class level annotation which tells the Spring Framework that this class serves as a controller in Spring MVC:
-```javascript
+```java
 @Controller
 public class VehicleController {
     // ...
@@ -109,7 +109,7 @@ public class VehicleController {
 ```
 ##7. @Configuration
    Configuration classes can contain bean definition methods annotated with @Bean:
-```javascript
+```java
 @Configuration
 class VehicleFactoryConfig {
 
@@ -124,7 +124,7 @@ class VehicleFactoryConfig {
    When we use Spring stereotype annotations, it's easy to create a pointcut that targets all classes that have a particular stereotype.
 
 For example, suppose we want to measure the execution time of methods from the DAO layer. We'll create the following aspect (using AspectJ annotations) taking advantage of @Repository stereotype:
-```javascript
+```java
 @Aspect
 @Component
 public class PerformanceAspect {
