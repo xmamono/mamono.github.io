@@ -1,0 +1,1 @@
+# mamono.github.io
