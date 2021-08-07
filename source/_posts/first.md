@@ -44,7 +44,7 @@ $ hexo server
 ### 1.4 创建github仓库
 travis对开源项目是收费的，github pages 想要设置域名为 http://username.github.io 则repository name 必须设置同域名，否则域名会变成 https://username.github.io/repository name，即创建repository的配置基本固定，repository name = username.github.io ，repository type = public
 
-![github repository](github.png)
+![github repository](/images/github.png)
 
 ### 1.5 上传代码
 > 如果repository没有创建README.md，不会创建分支，创建之后会生成默认**main**分支，不知道从什么时候开始不是**master**分支了。
@@ -87,5 +87,5 @@ deploy:
 ```
 至此可以看到travis控制台，每次代码提交会自动部署
 
-![travis dashboard](travis.png)
+![travis dashboard](/images/travis.png)
 
