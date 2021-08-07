@@ -42,7 +42,7 @@ $ npm install hexo-server --save
 $ hexo server
 ```
 ### 1.4 创建github仓库
-travis对开源项目是收费的，github pages 想要设置域名为 http://username.github.io 则repository name 必须设置同域名，否则域名会变成 https://username.github.io/repository name，即创建repository的配置基本固定，repository name = username.github.io ，repository type = public
+travis对开源项目是免费的，对私有项目是收费的；同时github pages 想要设置域名为 http://username.github.io 则repository name 必须设置同域名，否则域名会变成 https://username.github.io/repository name，即创建repository的配置基本固定，repository name = username.github.io ，repository type = public
 
 ![github repository](/images/github.png)
 
