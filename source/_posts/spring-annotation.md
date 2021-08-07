@@ -53,7 +53,7 @@ When using XML configuration, the configuring component scanning is just as easy
 ```java
 <context:component-scan base-package="com.baeldung" />
 ```
-##3. @Component
+## 3. @Component
    @Component is a class level annotation. During the component scan, Spring Framework automatically detects classes annotated with @Component.
 
 For example:
@@ -67,7 +67,7 @@ By default, the bean instances of this class have the same name as the class nam
 
 Since @Repository, @Service, @Configuration, and @Controller are all meta-annotations of @Component, they share the same bean naming behavior. Also, Spring automatically picks them up during the component scanning process.
 
-##4. @Repository
+## 4. @Repository
    DAO or Repository classes usually represent the database access layer in an application, and should be annotated with @Repository:
 ```java
 @Repository
@@ -91,7 +91,7 @@ Or, via XML configuration:
 <bean class=
   "org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 ```
-##5. @Service
+## 5. @Service
    The business logic of an application usually resides within the service layer – so we'll use the @Service annotation to indicate that a class belongs to that layer:
 ```java
 @Service
@@ -99,7 +99,7 @@ public class VehicleService {
     // ...    
 }
 ```
-##6. @Controller
+## 6. @Controller
    @Controller is a class level annotation which tells the Spring Framework that this class serves as a controller in Spring MVC:
 ```java
 @Controller
@@ -107,7 +107,7 @@ public class VehicleController {
     // ...
 }
 ```
-##7. @Configuration
+## 7. @Configuration
    Configuration classes can contain bean definition methods annotated with @Bean:
 ```java
 @Configuration
@@ -149,7 +149,7 @@ In this example, we created a pointcut that matches all methods in classes annot
 
 Using this approach, we may add logging, performance management, audit, or other behaviors to each application layer.
 
-##9. Conclusion
+## 9. Conclusion
    In this article, we have examined the Spring stereotype annotations and learned what type of semantics these each represent.
 
 We also learned how to use component scanning to tell the container where to find annotated classes.
