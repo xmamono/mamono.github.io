@@ -4,7 +4,7 @@
 
 # Site
 title: Thanks for attention
-subtitle: 'working hard'
+subtitle: 'Hard working...'
 description: ''
 keywords:
 author: Wei Xiao
@@ -103,4 +103,6 @@ theme: hexo-theme-icalm
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
+
+favicon: /assets/tree_small.png
 
