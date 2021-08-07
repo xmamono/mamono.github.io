@@ -64,6 +64,7 @@ $ git push -u origin main
 写的很详细，需要注意的是.travis.yml文件中有两处需要修改
 1. nodejs版本 v10测试对代码块的支持有限，可以考虑升级到最新版
 2. branches 监听分支改为main。
+
 > 将 .travis.yml 推送到 repository 中，Travis CI 应该会自动开始运行，并将生成的文件推送到同一 repository 下的 gh-pages 分支下
 ```yml
 sudo: false
