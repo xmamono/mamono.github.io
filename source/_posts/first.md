@@ -90,3 +90,5 @@ deploy:
 
 ![travis dashboard](/images/travis.png)
 
+**不得不说，travis是真的厉害，使用人性化，界面简洁**
+
