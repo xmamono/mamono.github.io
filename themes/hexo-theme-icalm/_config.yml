@@ -3,7 +3,7 @@ menu:
   Home: /
   Archive: /archives/
   Tags: /tags/
-  Categories: /categories/
+#  Categories: /categories/
   About: /about/
 
 # Pictures shown on the sidebar
