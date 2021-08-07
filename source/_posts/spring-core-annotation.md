@@ -1,5 +1,5 @@
 ---
-title: spring-core-annotation
+title: spring core annotation
 date: 2021-08-07 23:29:25
 tags: [spring]
 ---
