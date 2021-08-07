@@ -14,13 +14,13 @@ date: 2021-08-07 08:00:08
 ```shell
 $ npm install -g hexo-cli
 ```
+<!--more-->
 ### 1.2 初始化项目
 ```shell
 $ hexo init <folder>
 $ cd <folder>
 $ npm install
 ```
-<!--more-->
 初始化完成之后项目结构
 ```text
 .
