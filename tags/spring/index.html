@@ -110,7 +110,118 @@
     </header>
     <div>
       
-        <h2 id="Component"><a href="#Component" class="headerlink" title="@Component"></a>@Component</h2><h2 id="Repository"><a href="#Repository" class="headerlink" title="@Repository"></a>@Repository</h2><h2 id="Service"><a href="#Service" class="headerlink" title="@Service"></a>@Service</h2><h2 id="Controller"><a href="#Controller" class="headerlink" title="@Controller"></a>@Controller</h2><h2 id="Configuration"><a href="#Configuration" class="headerlink" title="@Configuration"></a>@Configuration</h2><p>11</p>
+        <p><code>Copyright© https://www.baeldung.com/spring-bean-annotations</code></p>
+<h2 id="1-Overview"><a href="#1-Overview" class="headerlink" title="1. Overview"></a>1. Overview</h2><p>   In this article, we’ll discuss the most common Spring bean annotations used to define different types of beans.</p>
+<p>There’re several ways to configure beans in a Spring container. We can declare them using XML configuration. We can declare beans using the @Bean annotation in a configuration class.</p>
+<p>Or we can mark the class with one of the annotations from the org.springframework.stereotype package and leave the rest to component scanning.</p>
+<h2 id="2-Component-Scanning"><a href="#2-Component-Scanning" class="headerlink" title="2. Component Scanning"></a>2. Component Scanning</h2><p>   Spring can automatically scan a package for beans if component scanning is enabled.</p>
+<p>@ComponentScan configures which packages to scan for classes with annotation configuration. We can specify the base package names directly with one of the basePackages or value arguments (value is an alias for basePackages):</p>
+<pre><code class="java">@Configuration
+@ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)
+class VehicleFactoryConfig &#123;&#125;
+</code></pre>
+<p>Also, we can point to classes in the base packages with the basePackageClasses argument:</p>
+<pre><code class="java">@Configuration
+@ComponentScan(basePackageClasses = VehicleFactoryConfig.class)
+class VehicleFactoryConfig &#123;&#125;
+</code></pre>
+<p>Both arguments are arrays so that we can provide multiple packages for each.</p>
+<p>If no argument is specified, the scanning happens from the same package where the @ComponentScan annotated class is present.</p>
+<p>@ComponentScan leverages the Java 8 repeating annotations feature, which means we can mark a class with it multiple times:</p>
+<pre><code class="java">@Configuration
+@ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)
+@ComponentScan(basePackageClasses = VehicleFactoryConfig.class)
+class VehicleFactoryConfig &#123;&#125;
+</code></pre>
+<p>Alternatively, we can use @ComponentScans to specify multiple @ComponentScan configurations:</p>
+<pre><code class="java">@Configuration
+@ComponentScans(&#123; 
+  @ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)
+  @ComponentScan(basePackageClasses = VehicleFactoryConfig.class)
+&#125;)
+class VehicleFactoryConfig &#123;&#125;
+</code></pre>
+<p>When using XML configuration, the configuring component scanning is just as easy:</p>
+<pre><code class="java">&lt;context:component-scan base-package=&quot;com.baeldung&quot; /&gt;
+</code></pre>
+<p>##3. @Component<br>   @Component is a class level annotation. During the component scan, Spring Framework automatically detects classes annotated with @Component.</p>
+<p>For example:</p>
+<pre><code class="java">@Component
+class CarUtility &#123;
+    // ...
+&#125;
+</code></pre>
+<p>By default, the bean instances of this class have the same name as the class name with a lowercase initial. On top of that, we can specify a different name using the optional value argument of this annotation.</p>
+<p>Since @Repository, @Service, @Configuration, and @Controller are all meta-annotations of @Component, they share the same bean naming behavior. Also, Spring automatically picks them up during the component scanning process.</p>
+<p>##4. @Repository<br>   DAO or Repository classes usually represent the database access layer in an application, and should be annotated with @Repository:</p>
+<pre><code class="java">@Repository
+class VehicleRepository &#123;
+    // ...
+&#125;
+</code></pre>
+<p>One advantage of using this annotation is that it has automatic persistence exception translation enabled. When using a persistence framework such as Hibernate, native exceptions thrown within classes annotated with @Repository will be automatically translated into subclasses of Spring’s DataAccessExeption.</p>
+<p>To enable exception translation, we need to declare our own PersistenceExceptionTranslationPostProcessor bean:</p>
+<pre><code class="java">@Bean
+public PersistenceExceptionTranslationPostProcessor exceptionTranslation() &#123;
+    return new PersistenceExceptionTranslationPostProcessor();
+&#125;
+</code></pre>
+<p>Note, that in most cases, Spring does the step above automatically.</p>
+<p>Or, via XML configuration:</p>
+<pre><code class="java">&lt;bean class=
+  &quot;org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor&quot;/&gt;
+</code></pre>
+<p>##5. @Service<br>   The business logic of an application usually resides within the service layer – so we’ll use the @Service annotation to indicate that a class belongs to that layer:</p>
+<pre><code class="java">@Service
+public class VehicleService &#123;
+    // ...    
+&#125;
+</code></pre>
+<p>##6. @Controller<br>   @Controller is a class level annotation which tells the Spring Framework that this class serves as a controller in Spring MVC:</p>
+<pre><code class="java">@Controller
+public class VehicleController &#123;
+    // ...
+&#125;
+</code></pre>
+<p>##7. @Configuration<br>   Configuration classes can contain bean definition methods annotated with @Bean:</p>
+<pre><code class="java">@Configuration
+class VehicleFactoryConfig &#123;
+
+    @Bean
+    Engine engine() &#123;
+        return new Engine();
+    &#125;
+
+&#125;
+</code></pre>
+<h2 id="8-Stereotype-Annotations-and-AOP"><a href="#8-Stereotype-Annotations-and-AOP" class="headerlink" title="8. Stereotype Annotations and AOP"></a>8. Stereotype Annotations and AOP</h2><p>   When we use Spring stereotype annotations, it’s easy to create a pointcut that targets all classes that have a particular stereotype.</p>
+<p>For example, suppose we want to measure the execution time of methods from the DAO layer. We’ll create the following aspect (using AspectJ annotations) taking advantage of @Repository stereotype:</p>
+<pre><code class="java">@Aspect
+@Component
+public class PerformanceAspect &#123;
+    @Pointcut(&quot;within(@org.springframework.stereotype.Repository *)&quot;)
+    public void repositoryClassMethods() &#123;&#125;;
+
+    @Around(&quot;repositoryClassMethods()&quot;)
+    public Object measureMethodExecutionTime(ProceedingJoinPoint joinPoint) 
+      throws Throwable &#123;
+        long start = System.nanoTime();
+        Object returnValue = joinPoint.proceed();
+        long end = System.nanoTime();
+        String methodName = joinPoint.getSignature().getName();
+        System.out.println(
+          &quot;Execution of &quot; + methodName + &quot; took &quot; + 
+          TimeUnit.NANOSECONDS.toMillis(end - start) + &quot; ms&quot;);
+        return returnValue;
+    &#125;
+&#125;
+</code></pre>
+<p>In this example, we created a pointcut that matches all methods in classes annotated with @Repository. We used the @Around advice to then target that pointcut and determine the execution time of the intercepted methods calls.</p>
+<p>Using this approach, we may add logging, performance management, audit, or other behaviors to each application layer.</p>
+<p>##9. Conclusion<br>   In this article, we have examined the Spring stereotype annotations and learned what type of semantics these each represent.</p>
+<p>We also learned how to use component scanning to tell the container where to find annotated classes.</p>
+<p>Finally – we saw how these annotations lead to a clean, layered design and separation between the concerns of an application. They also make configuration smaller, as we no longer need to explicitly define beans manually.</p>
+<p>As usual, the examples are available over on GitHub.</p>
 
       
     </div>
