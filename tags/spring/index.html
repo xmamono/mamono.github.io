@@ -116,106 +116,39 @@
 <p>Or we can mark the class with one of the annotations from the org.springframework.stereotype package and leave the rest to component scanning.</p>
 <h2 id="2-Component-Scanning"><a href="#2-Component-Scanning" class="headerlink" title="2. Component Scanning"></a>2. Component Scanning</h2><p>   Spring can automatically scan a package for beans if component scanning is enabled.</p>
 <p>@ComponentScan configures which packages to scan for classes with annotation configuration. We can specify the base package names directly with one of the basePackages or value arguments (value is an alias for basePackages):</p>
-<pre><code class="java">@Configuration
-@ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)
-class VehicleFactoryConfig &#123;&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleFactoryConfig</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>Also, we can point to classes in the base packages with the basePackageClasses argument:</p>
-<pre><code class="java">@Configuration
-@ComponentScan(basePackageClasses = VehicleFactoryConfig.class)
-class VehicleFactoryConfig &#123;&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(basePackageClasses = VehicleFactoryConfig.class)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleFactoryConfig</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>Both arguments are arrays so that we can provide multiple packages for each.</p>
 <p>If no argument is specified, the scanning happens from the same package where the @ComponentScan annotated class is present.</p>
 <p>@ComponentScan leverages the Java 8 repeating annotations feature, which means we can mark a class with it multiple times:</p>
-<pre><code class="java">@Configuration
-@ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)
-@ComponentScan(basePackageClasses = VehicleFactoryConfig.class)
-class VehicleFactoryConfig &#123;&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)</span></span><br><span class="line"><span class="meta">@ComponentScan(basePackageClasses = VehicleFactoryConfig.class)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleFactoryConfig</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>Alternatively, we can use @ComponentScans to specify multiple @ComponentScan configurations:</p>
-<pre><code class="java">@Configuration
-@ComponentScans(&#123; 
-  @ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)
-  @ComponentScan(basePackageClasses = VehicleFactoryConfig.class)
-&#125;)
-class VehicleFactoryConfig &#123;&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScans(&#123; </span></span><br><span class="line"><span class="meta">  @ComponentScan(basePackages = &quot;com.baeldung.annotations&quot;)</span></span><br><span class="line"><span class="meta">  @ComponentScan(basePackageClasses = VehicleFactoryConfig.class)</span></span><br><span class="line"><span class="meta">&#125;)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleFactoryConfig</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 <p>When using XML configuration, the configuring component scanning is just as easy:</p>
-<pre><code class="java">&lt;context:component-scan base-package=&quot;com.baeldung&quot; /&gt;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;context:component-scan base-<span class="keyword">package</span>=<span class="string">&quot;com.baeldung&quot;</span> /&gt;</span><br></pre></td></tr></table></figure>
 <p>##3. @Component<br>   @Component is a class level annotation. During the component scan, Spring Framework automatically detects classes annotated with @Component.</p>
 <p>For example:</p>
-<pre><code class="java">@Component
-class CarUtility &#123;
-    // ...
-&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CarUtility</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>By default, the bean instances of this class have the same name as the class name with a lowercase initial. On top of that, we can specify a different name using the optional value argument of this annotation.</p>
 <p>Since @Repository, @Service, @Configuration, and @Controller are all meta-annotations of @Component, they share the same bean naming behavior. Also, Spring automatically picks them up during the component scanning process.</p>
 <p>##4. @Repository<br>   DAO or Repository classes usually represent the database access layer in an application, and should be annotated with @Repository:</p>
-<pre><code class="java">@Repository
-class VehicleRepository &#123;
-    // ...
-&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleRepository</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>One advantage of using this annotation is that it has automatic persistence exception translation enabled. When using a persistence framework such as Hibernate, native exceptions thrown within classes annotated with @Repository will be automatically translated into subclasses of Spring’s DataAccessExeption.</p>
 <p>To enable exception translation, we need to declare our own PersistenceExceptionTranslationPostProcessor bean:</p>
-<pre><code class="java">@Bean
-public PersistenceExceptionTranslationPostProcessor exceptionTranslation() &#123;
-    return new PersistenceExceptionTranslationPostProcessor();
-&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PersistenceExceptionTranslationPostProcessor <span class="title">exceptionTranslation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PersistenceExceptionTranslationPostProcessor();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Note, that in most cases, Spring does the step above automatically.</p>
 <p>Or, via XML configuration:</p>
-<pre><code class="java">&lt;bean class=
-  &quot;org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor&quot;/&gt;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean <span class="class"><span class="keyword">class</span></span>=</span><br><span class="line">  <span class="string">&quot;org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor&quot;</span>/&gt;</span><br></pre></td></tr></table></figure>
 <p>##5. @Service<br>   The business logic of an application usually resides within the service layer – so we’ll use the @Service annotation to indicate that a class belongs to that layer:</p>
-<pre><code class="java">@Service
-public class VehicleService &#123;
-    // ...    
-&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VehicleService</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...    </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>##6. @Controller<br>   @Controller is a class level annotation which tells the Spring Framework that this class serves as a controller in Spring MVC:</p>
-<pre><code class="java">@Controller
-public class VehicleController &#123;
-    // ...
-&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VehicleController</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>##7. @Configuration<br>   Configuration classes can contain bean definition methods annotated with @Bean:</p>
-<pre><code class="java">@Configuration
-class VehicleFactoryConfig &#123;
-
-    @Bean
-    Engine engine() &#123;
-        return new Engine();
-    &#125;
-
-&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleFactoryConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function">Engine <span class="title">engine</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Engine();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="8-Stereotype-Annotations-and-AOP"><a href="#8-Stereotype-Annotations-and-AOP" class="headerlink" title="8. Stereotype Annotations and AOP"></a>8. Stereotype Annotations and AOP</h2><p>   When we use Spring stereotype annotations, it’s easy to create a pointcut that targets all classes that have a particular stereotype.</p>
 <p>For example, suppose we want to measure the execution time of methods from the DAO layer. We’ll create the following aspect (using AspectJ annotations) taking advantage of @Repository stereotype:</p>
-<pre><code class="java">@Aspect
-@Component
-public class PerformanceAspect &#123;
-    @Pointcut(&quot;within(@org.springframework.stereotype.Repository *)&quot;)
-    public void repositoryClassMethods() &#123;&#125;;
-
-    @Around(&quot;repositoryClassMethods()&quot;)
-    public Object measureMethodExecutionTime(ProceedingJoinPoint joinPoint) 
-      throws Throwable &#123;
-        long start = System.nanoTime();
-        Object returnValue = joinPoint.proceed();
-        long end = System.nanoTime();
-        String methodName = joinPoint.getSignature().getName();
-        System.out.println(
-          &quot;Execution of &quot; + methodName + &quot; took &quot; + 
-          TimeUnit.NANOSECONDS.toMillis(end - start) + &quot; ms&quot;);
-        return returnValue;
-    &#125;
-&#125;
-</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerformanceAspect</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Pointcut(&quot;within(@org.springframework.stereotype.Repository *)&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">repositoryClassMethods</span><span class="params">()</span> </span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Around(&quot;repositoryClassMethods()&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">measureMethodExecutionTime</span><span class="params">(ProceedingJoinPoint joinPoint)</span> </span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> start = System.nanoTime();</span><br><span class="line">        Object returnValue = joinPoint.proceed();</span><br><span class="line">        <span class="keyword">long</span> end = System.nanoTime();</span><br><span class="line">        String methodName = joinPoint.getSignature().getName();</span><br><span class="line">        System.out.println(</span><br><span class="line">          <span class="string">&quot;Execution of &quot;</span> + methodName + <span class="string">&quot; took &quot;</span> + </span><br><span class="line">          TimeUnit.NANOSECONDS.toMillis(end - start) + <span class="string">&quot; ms&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> returnValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>In this example, we created a pointcut that matches all methods in classes annotated with @Repository. We used the @Around advice to then target that pointcut and determine the execution time of the intercepted methods calls.</p>
 <p>Using this approach, we may add logging, performance management, audit, or other behaviors to each application layer.</p>
 <p>##9. Conclusion<br>   In this article, we have examined the Spring stereotype annotations and learned what type of semantics these each represent.</p>
