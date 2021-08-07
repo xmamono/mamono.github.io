@@ -82,7 +82,120 @@
     <header class="title">
       
         <h1>
-          <a href="/2021/08/07/spring-annotation/">spring annotation</a>
+          <a href="/2021/08/07/spring-core-annotation/">spring-core-annotation</a>
+        </h1>
+      
+      <div class='ListMeta'>
+  <time datetime="2021-08-07T23:29:25.000Z" itemprop="datePublished">
+    2021-08-07
+  </time>
+  
+  | 
+  <ul>
+    
+  <li class="meta-text">
+  { <a href="/tags/spring/">spring</a> }
+  </li>
+
+
+  </ul>
+  
+  
+</div>
+
+    </header>
+    <div>
+      
+        <p><em><strong>Copyright© <a target="_blank" rel="noopener" href="https://www.baeldung.com/spring-bean-annotations">https://www.baeldung.com/spring-bean-annotations</a></strong></em></p>
+<h2 id="1-Overview"><a href="#1-Overview" class="headerlink" title="1. Overview"></a>1. Overview</h2><p>   We can leverage the capabilities of Spring DI engine using the annotations in the org.springframework.beans.factory.annotation and org.springframework.context.annotation packages.</p>
+<p>We often call these “Spring core annotations” and we’ll review them in this tutorial.</p>
+<h2 id="2-DI-Related-Annotations"><a href="#2-DI-Related-Annotations" class="headerlink" title="2. DI-Related Annotations"></a>2. DI-Related Annotations</h2><h3 id="2-1-Autowired"><a href="#2-1-Autowired" class="headerlink" title="2.1. @Autowired"></a>2.1. @Autowired</h3><p>   We can use the @Autowired to mark a dependency which Spring is going to resolve and inject. We can use this annotation with a constructor, setter, or field injection.</p>
+<p>Constructor injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    Engine engine;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    Car(Engine engine) &#123;</span><br><span class="line">        <span class="keyword">this</span>.engine = engine;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Setter injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    Engine engine;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setEngine</span><span class="params">(Engine engine)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.engine = engine;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Field injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    Engine engine;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@Autowired has a boolean argument called required with a default value of true. It tunes Spring’s behavior when it doesn’t find a suitable bean to wire. When true, an exception is thrown, otherwise, nothing is wired.</p>
+<p>Note, that if we use constructor injection, all constructor arguments are mandatory.</p>
+<p>Starting with version 4.3, we don’t need to annotate constructors with @Autowired explicitly unless we declare at least two constructors.</p>
+<p>For more details visit our articles about @Autowired and constructor injection.</p>
+<h3 id="2-2-Bean"><a href="#2-2-Bean" class="headerlink" title="2.2. @Bean"></a>2.2. @Bean</h3><p>@Bean marks a factory method which instantiates a Spring bean:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function">Engine <span class="title">engine</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Engine();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Spring calls these methods when a new instance of the return type is required.</p>
+<p>The resulting bean has the same name as the factory method. If we want to name it differently, we can do so with the name or the value arguments of this annotation (the argument value is an alias for the argument name):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean(&quot;engine&quot;)</span></span><br><span class="line"><span class="function">Engine <span class="title">getEngine</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Engine();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Note, that all methods annotated with @Bean must be in @Configuration classes.</strong></p>
+<h3 id="2-3-Qualifier"><a href="#2-3-Qualifier" class="headerlink" title="2.3. @Qualifier"></a>2.3. @Qualifier</h3><p>We use @Qualifier along with @Autowired to provide the bean id or bean name we want to use in ambiguous situations.<br>For example, the following two beans implement the same interface:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bike</span> <span class="keyword">implements</span> <span class="title">Vehicle</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> <span class="keyword">implements</span> <span class="title">Vehicle</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>If Spring needs to inject a Vehicle bean, it ends up with multiple matching definitions. In such cases, we can provide a bean’s name explicitly using the @Qualifier annotation.</p>
+<p>Using constructor injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">Biker(<span class="meta">@Qualifier(&quot;bike&quot;)</span> Vehicle vehicle) &#123;</span><br><span class="line">    <span class="keyword">this</span>.vehicle = vehicle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Using setter injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setVehicle</span><span class="params">(<span class="meta">@Qualifier(&quot;bike&quot;)</span> Vehicle vehicle)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.vehicle = vehicle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Alternatively:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Qualifier(&quot;bike&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setVehicle</span><span class="params">(Vehicle vehicle)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.vehicle = vehicle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Using field injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Qualifier(&quot;bike&quot;)</span></span><br><span class="line">Vehicle vehicle;</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-Required"><a href="#2-4-Required" class="headerlink" title="2.4. @Required"></a>2.4. @Required</h3><p>@Required on setter methods to mark dependencies that we want to populate through XML:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Required</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setColor</span><span class="params">(String color)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.color = color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;com.baeldung.annotations.Bike&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;color&quot;</span> <span class="attr">value</span>=<span class="string">&quot;green&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Otherwise, BeanInitializationException will be thrown.</p>
+<h3 id="2-5-Value"><a href="#2-5-Value" class="headerlink" title="2.5. @Value"></a>2.5. @Value</h3><p>We can use @Value for injecting property values into beans. It’s compatible with constructor, setter, and field injection.</p>
+<p>Constructor injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Engine(<span class="meta">@Value(&quot;8&quot;)</span> <span class="keyword">int</span> cylinderCount) &#123;</span><br><span class="line">    <span class="keyword">this</span>.cylinderCount = cylinderCount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Setter injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setCylinderCount</span><span class="params">(<span class="meta">@Value(&quot;8&quot;)</span> <span class="keyword">int</span> cylinderCount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.cylinderCount = cylinderCount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Alternatively:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;8&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setCylinderCount</span><span class="params">(<span class="keyword">int</span> cylinderCount)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.cylinderCount = cylinderCount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Field injection:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;8&quot;)</span></span><br><span class="line"><span class="keyword">int</span> cylinderCount;</span><br></pre></td></tr></table></figure>
+
+<p>Of course, injecting static values isn’t useful. Therefore, we can use placeholder strings in @Value to wire values defined in external sources, for example, in .properties or .yaml files.</p>
+<p>Let’s assume the following .properties file:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">engine.fuelType=petrol</span><br></pre></td></tr></table></figure>
+<p>We can inject the value of engine.fuelType with the following:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Value(&quot;$&#123;engine.fuelType&#125;&quot;)</span></span><br><span class="line">String fuelType;</span><br></pre></td></tr></table></figure>
+<p>We can use @Value even with SpEL. More advanced examples can be found in our article about @Value.</p>
+<h3 id="2-6-DependsOn"><a href="#2-6-DependsOn" class="headerlink" title="2.6. @DependsOn"></a>2.6. @DependsOn</h3><p>We can use this annotation to make Spring initialize other beans before the annotated one. Usually, this behavior is automatic, based on the explicit dependencies between beans.</p>
+<p>We only need this annotation when the dependencies are implicit, for example, JDBC driver loading or static variable initialization.</p>
+<p>We can use @DependsOn on the dependent class specifying the names of the dependency beans. The annotation’s value argument needs an array containing the dependency bean names:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@DependsOn(&quot;engine&quot;)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> <span class="keyword">implements</span> <span class="title">Vehicle</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>Alternatively, if we define a bean with the @Bean annotation, the factory method should be annotated with @DependsOn:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="meta">@DependsOn(&quot;fuel&quot;)</span></span><br><span class="line"><span class="function">Engine <span class="title">engine</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Engine();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-7-Lazy"><a href="#2-7-Lazy" class="headerlink" title="2.7. @Lazy"></a>2.7. @Lazy</h3><p>We use @Lazy when we want to initialize our bean lazily. By default, Spring creates all singleton beans eagerly at the startup/bootstrapping of the application context.</p>
+<p>However, there are cases when we need to create a bean when we request it, not at application startup.<br>This annotation behaves differently depending on where we exactly place it. We can put it on:</p>
+<ul>
+<li>a @Bean annotated bean factory method, to delay the method call (hence the bean creation)</li>
+<li>a @Configuration class and all contained @Bean methods will be affected</li>
+<li>a @Component class, which is not a @Configuration class, this bean will be initialized lazily</li>
+<li>an @Autowired constructor, setter, or field, to load the dependency itself lazily (via proxy)<br>This annotation has an argument named value with the default value of true. It is useful to override the default behavior.</li>
+</ul>
+<p>For example, marking beans to be eagerly loaded when the global setting is lazy, or configure specific @Bean methods to eager loading in a @Configuration class marked with @Lazy:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Lazy</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleFactoryConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Lazy(false)</span></span><br><span class="line">    <span class="function">Engine <span class="title">engine</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Engine();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-8-Lookup"><a href="#2-8-Lookup" class="headerlink" title="2.8. @Lookup"></a>2.8. @Lookup</h3><p>A method annotated with @Lookup tells Spring to return an instance of the method’s return type when we invoke it.</p>
+<h3 id="2-9-Primary"><a href="#2-9-Primary" class="headerlink" title="2.9. @Primary"></a>2.9. @Primary</h3><p>Sometimes we need to define multiple beans of the same type. In these cases, the injection will be unsuccessful because Spring has no clue which bean we need.</p>
+<p>We already saw an option to deal with this scenario: marking all the wiring points with @Qualifier and specify the name of the required bean.<br>However, most of the time we need a specific bean and rarely the others. We can use @Primary to simplify this case: if we mark the most frequently used bean with @Primary it will be chosen on unqualified injection points:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> <span class="keyword">implements</span> <span class="title">Vehicle</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bike</span> <span class="keyword">implements</span> <span class="title">Vehicle</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Driver</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    Vehicle vehicle;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Biker</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier(&quot;bike&quot;)</span></span><br><span class="line">    Vehicle vehicle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In the previous example Car is the primary vehicle. Therefore, in the Driver class, Spring injects a Car bean. Of course, in the Biker bean, the value of the field vehicle will be a Bike object because it’s qualified.</p>
+<h3 id="2-10-Scope"><a href="#2-10-Scope" class="headerlink" title="2.10. @Scope"></a>2.10. @Scope</h3><p>We use @Scope to define the scope of a @Component class or a @Bean definition. It can be either singleton, prototype, request, session, globalSession or some custom scope.</p>
+<p>For example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Scope(&quot;prototype&quot;)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Engine</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+</article>
+
+    </li>
+  
+    <li>
+      <article class='ListView'>
+    <header class="title">
+      
+        <h1>
+          <a href="/2021/08/07/spring-bean-annotation/">spring bean annotation</a>
         </h1>
       
       <div class='ListMeta'>
