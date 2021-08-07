@@ -3,7 +3,7 @@ title: spring annotation
 date: 2021-08-07 15:37:46
 tags: [spring]
 ---
-`Copyright© https://www.baeldung.com/spring-bean-annotations`
+_**Copyright© https://www.baeldung.com/spring-bean-annotations**_
 
 ## 1. Overview
    In this article, we'll discuss the most common Spring bean annotations used to define different types of beans.
