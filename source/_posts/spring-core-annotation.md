@@ -9,7 +9,7 @@ _**Copyright© https://www.baeldung.com/spring-bean-annotations**_
    We can leverage the capabilities of Spring DI engine using the annotations in the org.springframework.beans.factory.annotation and org.springframework.context.annotation packages.
 
 We often call these “Spring core annotations” and we'll review them in this tutorial.
-
+<!--more-->
 ## 2. DI-Related Annotations
 ### 2.1. @Autowired
    We can use the @Autowired to mark a dependency which Spring is going to resolve and inject. We can use this annotation with a constructor, setter, or field injection.

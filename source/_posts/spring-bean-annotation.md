@@ -11,7 +11,7 @@ _**Copyright© https://www.baeldung.com/spring-bean-annotations**_
 There're several ways to configure beans in a Spring container. We can declare them using XML configuration. We can declare beans using the @Bean annotation in a configuration class.
 
 Or we can mark the class with one of the annotations from the org.springframework.stereotype package and leave the rest to component scanning.
-
+<!--more-->
 ## 2. Component Scanning
    Spring can automatically scan a package for beans if component scanning is enabled.
 
