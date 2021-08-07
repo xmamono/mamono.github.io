@@ -1,7 +1,7 @@
 ---
 title: spring core annotation
 date: 2021-08-07 23:29:25
-tags: [spring]
+tags: [spring,spring annotation]
 ---
 _**Copyright© https://www.baeldung.com/spring-bean-annotations**_
 
